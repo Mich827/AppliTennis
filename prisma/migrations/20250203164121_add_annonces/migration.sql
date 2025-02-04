@@ -1,0 +1,11 @@
+-- CreateTable
+CREATE TABLE "Annonce" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "userId" INTEGER NOT NULL,
+    "userName" TEXT NOT NULL,
+    "niveau" TEXT NOT NULL,
+    "dispo" TEXT NOT NULL,
+    "message" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Annonce_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
