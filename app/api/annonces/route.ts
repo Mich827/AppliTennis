@@ -13,8 +13,9 @@ export async function POST(req: Request) {
     }
 
     const annonce = await prisma.annonce.create({
-      data: { userName, niveau, dispo, message },
+      data: { userId: 1, userName, niveau, dispo, message }, // Remplace 1 par l'ID réel de l'utilisateur
     });
+    
 
     return NextResponse.json({ annonce });
   } catch (error) {
