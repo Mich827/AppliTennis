@@ -7,7 +7,7 @@ import Booking from "../components/Booking";
 import Home from "../components/Home";
 import Chat from "../components/Chat"; // 🔥 Import du composant Chat
 import Annonce from "../components/Annonce";
-
+import AI from "../components/AI";
 export default function HomePage() {
   const [userName, setUserName] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null); // 🔥 Stocke l'ID de l'utilisateur
@@ -50,7 +50,7 @@ export default function HomePage() {
 
       {/* 📌 Menu de navigation responsive */}
       <div className="bg-gray-200 flex flex-wrap justify-center p-2 shadow-inner gap-2 md:gap-6">
-        {["home", "booking", "chat", "annonces"].map((tab) => (
+        {["home", "booking", "chat", "annonces", "Ai"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -71,6 +71,7 @@ export default function HomePage() {
         {activeTab === "booking" && <Booking />}
         {activeTab === "chat" && userId && <Chat userId={userId} recipientId={2} />}
         {activeTab === "annonces" && <Annonce />}
+        {activeTab === "Ai" && <AI/>}
       </main>
 
       {/* 📌 Pied de page amélioré */}

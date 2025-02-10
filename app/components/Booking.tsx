@@ -88,7 +88,7 @@ const Booking = () => {
         });
 
         toast.success("Réservation annulée !");
-      } catch (error) {
+      } catch  {
         toast.error("Erreur de serveur");
       }
     } else {
@@ -124,7 +124,7 @@ const Booking = () => {
         } else {
           toast.error(data.error || "Erreur de réservation");
         }
-      } catch (error) {
+      } catch  {
         toast.error("Erreur de serveur");
       }
     }
@@ -157,13 +157,16 @@ const Booking = () => {
 
       {/* 📅 Sélecteur de date */}
       <div className="text-center mb-6">
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date: Date) => setSelectedDate(date)}
-          minDate={new Date()} // Pour interdire la réservation dans le passé
-          dateFormat="dd/MM/yyyy"
-          className="border p-2 rounded"
-        />
+      <DatePicker
+  selected={selectedDate}
+  onChange={(date: Date | null) => {
+    if (date) setSelectedDate(date); // Vérifie que la date n'est pas null avant de la mettre à jour
+  }}
+  minDate={new Date()} // Empêche la sélection de dates passées
+  dateFormat="dd/MM/yyyy"
+  className="border p-2 rounded"
+/>
+
       </div>
 
       <div className="overflow-x-auto">

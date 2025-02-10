@@ -1,6 +1,7 @@
+//components/Annonce.tsx
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import TennisQA from "./AI";
+
 
 const AnnonceForm = () => {
   const [userName, setUserName] = useState("");
@@ -9,7 +10,13 @@ const AnnonceForm = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [annonces, setAnnonces] = useState([]); // Stocke les annonces
-
+  useEffect(() => {
+    const storedUserName = localStorage.getItem("userName");
+    if (storedUserName) {
+      setUserName(storedUserName); // 🔥 Remplit automatiquement le champ Nom
+    }
+  }, []);
+  
   // Charger les annonces au montage du composant
   useEffect(() => {
     fetchAnnonces();
@@ -28,47 +35,57 @@ const AnnonceForm = () => {
 
       const data = await response.json();
       setAnnonces(data.annonces);
-    } catch (error) {
+    } catch  {
       toast.error("Impossible de charger les annonces");
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!userName || !niveau || !dispo || !message) {
+  
+    if (!niveau || !dispo || !message) {
       toast.error("Veuillez remplir tous les champs !");
       return;
     }
-
+  
+    const storedUserId = localStorage.getItem("userId");
+    const storedUserName = localStorage.getItem("userName");
+  
+    if (!storedUserId || !storedUserName) {
+      toast.error("Utilisateur non identifié !");
+      return;
+    }
+  
     setLoading(true);
     try {
       const response = await fetch("/api/annonces", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userName, niveau, dispo, message }),
+        headers: {
+          "Content-Type": "application/json",
+          "userId": storedUserId, // 🔥 On envoie l'ID de l'utilisateur
+          "userName": storedUserName,
+        },
+        body: JSON.stringify({ niveau, dispo, message }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Erreur lors de la création de l'annonce");
       }
-
+  
       const data = await response.json();
       toast.success("Annonce publiée !");
-
-      // Mettre à jour la liste des annonces après la publication
+  
       setAnnonces((prev) => [data.annonce, ...prev]);
-
-      // Réinitialiser le formulaire après validation
-      setUserName("");
+  
       setNiveau("");
       setDispo("");
       setMessage("");
-    } catch (error) {
+    } catch  {
       toast.error("Erreur serveur, réessayez plus tard");
     }
     setLoading(false);
   };
+  
   const handleDelete = async (annonceId: string) => {
     try {
       const response = await fetch("/api/deleteAnnonce", {
@@ -83,7 +100,7 @@ const AnnonceForm = () => {
   
       toast.success("Annonce supprimée !");
       setAnnonces((prev) => prev.filter((annonce) => annonce.id !== annonceId));
-    } catch (error) {
+    } catch  {
       toast.error("Impossible de supprimer l'annonce");
     }
   };
@@ -101,13 +118,17 @@ const AnnonceForm = () => {
           onChange={(e) => setUserName(e.target.value)}
           className="w-full p-2 border rounded"
         />
-        <input
-          type="text"
-          placeholder="Niveau (Débutant, Intermédiaire, Avancé)"
-          value={niveau}
-          onChange={(e) => setNiveau(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
+        <select
+        value={niveau}
+        onChange={(e) => setNiveau(e.target.value)}
+        className="w-full p-2 border rounded"
+      >
+        <option value="">Sélectionnez votre niveau</option>
+        <option value="Débutant">Débutant</option>
+        <option value="Intermédiaire">Intermédiaire</option>
+        <option value="Avancé">Avancé</option>
+      </select>
+      
         <input
           type="text"
           placeholder="Disponibilités (ex: Soir, Week-end)"
@@ -161,7 +182,7 @@ const AnnonceForm = () => {
         )}
       </div>
 
-      <TennisQA />
+      
     </div>
   );
 };

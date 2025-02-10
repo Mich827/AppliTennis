@@ -1,3 +1,4 @@
+//api/annonces/route.ts
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
@@ -6,16 +7,25 @@ const prisma = new PrismaClient();
 // Créer une annonce
 export async function POST(req: Request) {
   try {
-    const { userName, niveau, dispo, message } = await req.json();
+    const { niveau, dispo, message } = await req.json();
 
-    if (!userName || !niveau || !dispo || !message) {
-      return NextResponse.json({ error: "Tous les champs sont requis" }, { status: 400 });
+    // 🚀 Récupérer l'utilisateur connecté depuis localStorage côté client
+    const storedUserId = req.headers.get("userId"); // On récupère l'userId envoyé par le client
+    const storedUserName = req.headers.get("userName");
+
+    if (!storedUserId || !storedUserName) {
+      return NextResponse.json({ error: "Utilisateur non identifié" }, { status: 401 });
     }
 
     const annonce = await prisma.annonce.create({
-      data: { userId: 1, userName, niveau, dispo, message }, // Remplace 1 par l'ID réel de l'utilisateur
+      data: {
+        userId: parseInt(storedUserId), // Assurez-vous que c'est un nombre
+        userName: storedUserName,
+        niveau,
+        dispo,
+        message,
+      },
     });
-    
 
     return NextResponse.json({ annonce });
   } catch (error) {
