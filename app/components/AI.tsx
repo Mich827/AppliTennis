@@ -26,8 +26,8 @@ export default function AI() {
 
       setAnswer(data.answer);
       setQuestion(""); // 🔥 Réinitialisation du champ après validation
-    } catch (err: any) {
-      setError(err.message);
+    } catch  {
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -36,7 +36,7 @@ export default function AI() {
   return (
     <div className="max-w-lg mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
       <h1 className="text-3xl font-semibold text-gray-800 mb-4 text-center">
-        Posez une question à l'IA
+        Posez une question
       </h1>
 
       <textarea
