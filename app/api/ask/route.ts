@@ -30,12 +30,14 @@ export async function POST(req: NextRequest) {
       headers: { "Content-Type": "application/json" } 
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Erreur API Gemini:", error);
-    return new Response(JSON.stringify({ message: "Erreur du serveur", error: error.message }), { 
-      status: 500, 
-      headers: { "Content-Type": "application/json" } 
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return new Response(JSON.stringify({ message: "Erreur du serveur", error: errorMessage }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
     });
   }
+  
 }
 
