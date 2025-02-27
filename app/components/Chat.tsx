@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+
+export const dynamic = 'force-dynamic';
 
 interface Message {
   id: number;
@@ -21,31 +23,25 @@ export default function Chat({ userId }: { userId: number }) {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedRecipient, setSelectedRecipient] = useState<number | null>(null);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    if (selectedRecipient) {
-      fetchMessages();
-    }
-  }, [selectedRecipient]);
-
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     if (!selectedRecipient) return;
 
     try {
-      const response = await fetch(`/api/messages?userId=${userId}&recipientId=${selectedRecipient}`);
+      const response = await fetch(`/api/messages?userId=${userId}&recipientId=${selectedRecipient}`, {
+        cache: 'no-store'
+      });
       const data = await response.json();
       setMessages(data);
     } catch (error) {
       console.error("Erreur lors du chargement des messages :", error);
     }
-  };
+  }, [userId, selectedRecipient]);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
-      const response = await fetch("/api/users");
+      const response = await fetch("/api/users", {
+        cache: 'no-store'
+      });
       const data = await response.json();
 
       if (data.length > 0) {
@@ -55,7 +51,17 @@ export default function Chat({ userId }: { userId: number }) {
     } catch (error) {
       console.error("Erreur lors du chargement des utilisateurs :", error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  useEffect(() => {
+    if (selectedRecipient) {
+      fetchMessages();
+    }
+  }, [selectedRecipient, fetchMessages]);
 
   const sendMessage = async () => {
     if (!newMessage.trim() || !selectedRecipient) return;
