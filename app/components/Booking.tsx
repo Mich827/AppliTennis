@@ -115,10 +115,10 @@ const Booking = () => {
           }));
 
           // Envoie un email après la réservation
-          const userEmail = localStorage.getItem("userEmail");
+          /*const userEmail = localStorage.getItem("userEmail");
           if (userEmail) {
             await sendReservationEmail(userEmail, court, hour, selectedDate.toLocaleDateString("fr-FR"));
-          }
+          }*/
 
           toast.success("Réservation réussie !");
         } else {
@@ -130,25 +130,7 @@ const Booking = () => {
     }
   };
 
-  const sendReservationEmail = async (userEmail: string, court: string, hour: number, date: string) => {
-    try {
-      const response = await fetch('/api/sendEmail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userEmail, court, hour, date }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        console.log('Email envoyé');
-      } else {
-        console.error('Erreur d\'envoi de l\'email:', data.message);
-      }
-    } catch (error) {
-      console.error('Erreur d\'envoi de l\'email:', error);
-    }
-  };
-
+  
   return (
     <div className="p-6">
       <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
