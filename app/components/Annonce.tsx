@@ -94,7 +94,7 @@ const AnnonceForm = () => {
     setLoading(false);
   };
   
-  const handleDelete = async (annonceId: string) => {
+  const handleDelete = async (annonceId: number) => {
     try {
       const response = await fetch("/api/deleteAnnonce", {
         method: "DELETE",
@@ -107,7 +107,7 @@ const AnnonceForm = () => {
       }
   
       toast.success("Annonce supprimée !");
-      setAnnonces((prev) => prev.filter((annonce) => annonce.id !== annonceId));
+      setAnnonces((prev) => prev.filter((annonce) => annonce.id !== Number(annonceId)));
     } catch  {
       toast.error("Impossible de supprimer l'annonce");
     }
