@@ -2,14 +2,22 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-
+interface Annonce {
+  id: number;
+  userId: number;
+  userName: string;
+  niveau: string;
+  dispo: string;
+  message: string;
+  createdAt: Date;
+}
 const AnnonceForm = () => {
   const [userName, setUserName] = useState("");
   const [niveau, setNiveau] = useState("");
   const [dispo, setDispo] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [annonces, setAnnonces] = useState([]); // Stocke les annonces
+  const [annonces, setAnnonces] = useState<Annonce[]>([]);
   useEffect(() => {
     const storedUserName = localStorage.getItem("userName");
     if (storedUserName) {
@@ -129,13 +137,16 @@ const AnnonceForm = () => {
         <option value="Avancé">Avancé</option>
       </select>
       
-        <input
-          type="text"
-          placeholder="Disponibilités (ex: Soir, Week-end)"
-          value={dispo}
+        <select
+        value={dispo}
           onChange={(e) => setDispo(e.target.value)}
           className="w-full p-2 border rounded"
-        />
+        >
+         <option value="">Sélectionnez vos disponibilités</option>
+          <option value="Soir">Soir</option>
+          <option value="Week-end">Week-end</option>
+          <option value="Soir et Week-end">Soir et Week-end</option>
+          </select>
         <textarea
           placeholder="Message..."
           value={message}
