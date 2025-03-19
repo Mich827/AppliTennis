@@ -46,6 +46,7 @@ export async function POST(req: Request) {
         startTime,
         endTime: startTime + 1, // Le créneau dure 1 heure
         userId,
+        
       },
     });
 

@@ -19,7 +19,7 @@ export async function GET(req: Request) {
         court: res.court,
         date: res.date.toISOString().split("T")[0], // Format YYYY-MM-DD
         startTime: res.startTime,
-        userName: res.user?.name || "Inconnu",
+        userName: res.user.name || "Inconnu",
       })),
     });
   } catch (error) {

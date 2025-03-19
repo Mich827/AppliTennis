@@ -1,4 +1,3 @@
-// pages/booking.tsx
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -40,8 +39,8 @@ const Booking = () => {
         data.reservations.forEach((res: Reservation) => {
           newReservations[`${res.court}-${res.startTime}`] = {
             reserved: true,
-            userName: res.userName,
-            reservationId: res.id, // Stocke l'ID de la réservation pour l'annulation
+           // userName: res.userName, // Utilisez le nom de l'utilisateur inclus dans la réponse
+            reservationId: res.id,
           };
         });
 
@@ -115,12 +114,6 @@ const Booking = () => {
             [key]: { reserved: true, userName: data.reservation.userName, reservationId: data.reservation.id },
           }));
 
-          // Envoie un email après la réservation
-          /*const userEmail = localStorage.getItem("userEmail");
-          if (userEmail) {
-            await sendReservationEmail(userEmail, court, hour, selectedDate.toLocaleDateString("fr-FR"));
-          }*/
-
           toast.success("Réservation réussie !");
         } else {
           toast.error(data.error || "Erreur de réservation");
@@ -131,7 +124,6 @@ const Booking = () => {
     }
   };
 
-  
   return (
     <div className="p-6">
       <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
@@ -140,16 +132,15 @@ const Booking = () => {
 
       {/* 📅 Sélecteur de date */}
       <div className="text-center mb-6">
-      <DatePicker
-  selected={selectedDate}
-  onChange={(date: Date | null) => {
-    if (date) setSelectedDate(date); // Vérifie que la date n'est pas null avant de la mettre à jour
-  }}
-  minDate={new Date()} // Empêche la sélection de dates passées
-  dateFormat="dd/MM/yyyy"
-  className="border p-2 rounded"
-/>
-
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date: Date | null) => {
+            if (date) setSelectedDate(date); // Vérifie que la date n'est pas null avant de la mettre à jour
+          }}
+          minDate={new Date()} // Empêche la sélection de dates passées
+          dateFormat="dd/MM/yyyy"
+          className="border p-2 rounded"
+        />
       </div>
 
       <div className="overflow-x-auto">

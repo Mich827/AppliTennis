@@ -16,7 +16,7 @@ CREATE TABLE "Reservation" (
     "startTime" INTEGER NOT NULL,
     "endTime" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
-
+      
     CONSTRAINT "Reservation_pkey" PRIMARY KEY ("id")
 );
 
