@@ -143,6 +143,8 @@ const AnnonceForm = () => {
           className="w-full p-2 border rounded"
         >
          <option value="">Sélectionnez vos disponibilités</option>
+         <option value="Matin">Matin</option>
+         <option value="Aprés-midi">Aprés-midi</option>
           <option value="Soir">Soir</option>
           <option value="Week-end">Week-end</option>
           <option value="Soir et Week-end">Soir et Week-end</option>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DatePicker from "react-datepicker"; // Si tu utilises react-datepicker
+import DatePicker from "react-datepicker"; 
 import "react-datepicker/dist/react-datepicker.css";
 import { Reservation } from "@prisma/client";
 
@@ -39,7 +39,7 @@ const Booking = () => {
         data.reservations.forEach((res: Reservation) => {
           newReservations[`${res.court}-${res.startTime}`] = {
             reserved: true,
-           // userName: res.userName, // Utilisez le nom de l'utilisateur inclus dans la réponse
+            userName: res.userName, // Utilisez le nom de l'utilisateur inclus dans la réponse
             reservationId: res.id,
           };
         });
