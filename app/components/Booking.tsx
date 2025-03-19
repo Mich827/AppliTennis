@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-datepicker"; // Si tu utilises react-datepicker
 import "react-datepicker/dist/react-datepicker.css";
+import { Reservation } from "@prisma/client";
 
 // Liste des courts et des heures disponibles
 const courts = ["Court 1", "Court 2", "Court 3", "Court 4", "Court 5"];
@@ -36,7 +37,7 @@ const Booking = () => {
         const data = await response.json();
 
         const newReservations: Record<string, { reserved: boolean, userName?: string, reservationId?: number }> = {};
-        data.reservations.forEach((res) => {
+        data.reservations.forEach((res: Reservation) => {
           newReservations[`${res.court}-${res.startTime}`] = {
             reserved: true,
             userName: res.userName,
